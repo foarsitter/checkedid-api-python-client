@@ -1,0 +1,14 @@
+{
+  "_output_dir": "/home/jelmert/PycharmProjects",
+  "_template": "gh:cjolowicz/cookiecutter-hypermodern-python",
+  "author": "Jelmer Draaijer",
+  "copyright_year": "2022",
+  "development_status": "Development Status :: 4 - Beta",
+  "email": "jelmer.draaijer@dok.works.nl",
+  "friendly_name": "CheckedID Python API client",
+  "github_user": "foarsitter",
+  "license": "MIT",
+  "package_name": "checkedid",
+  "project_name": "checkedid-python-client",
+  "version": "0.1.0"
+}
