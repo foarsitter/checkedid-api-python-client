@@ -53,8 +53,6 @@ respx = "^0.20.1"
 [tool.poetry.scripts]
 checkedid-python-client = "checkedid.__main__:main"
 
-[tool.poetry.group.dev.dependencies]
-
 [tool.coverage.paths]
 source = ["src", "*/site-packages"]
 tests = ["tests", "*/tests"]
