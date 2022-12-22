@@ -298,21 +298,21 @@ class CreateInvitationDetails(BaseModel):
     CustomerCode: int = Field(
         ..., description="CustomerCode is integer as registered with CheckedID."
     )
-    Invitations: list[CreateInvitationRequest] = Field(
+    Invitations: List[CreateInvitationRequest] = Field(
         ..., description="List of Invitations"
     )
 
 
 class CustomerDetails(BaseModel):
     CustomerCode: int = Field(..., description="Customer Code")
-    Invitations: list[Invitation] = Field(..., description="List of Invitations")
+    Invitations: List[Invitation] = Field(..., description="List of Invitations")
 
 
 class UpdateInvitationDetails(BaseModel):
     CustomerCode: int = Field(
         ..., description="CustomerCode is integer as registered with CheckedID."
     )
-    Invitations: list[UpdateInvitationRequest] = Field(
+    Invitations: List[UpdateInvitationRequest] = Field(
         ..., description="List of Invitations"
     )
 
@@ -321,39 +321,39 @@ class CreateUserDetails(BaseModel):
     CustomerCode: int = Field(
         ..., description="CustomerCode is integer as registered with CheckedID."
     )
-    Users: list[CreateUserRequest] = Field(..., description="List of Users")
+    Users: List[CreateUserRequest] = Field(..., description="List of Users")
 
 
 class CreateUserDetailsResponse(BaseModel):
     CustomerCode: int = Field(
         ..., description="CustomerCode is integer as registered with CheckedID."
     )
-    Users: list[CreateUserResponse] = Field(..., description="List of users")
+    Users: List[CreateUserResponse] = Field(..., description="List of users")
 
 
 class UpdateUserDetails(BaseModel):
     CustomerCode: int = Field(
         ..., description="CustomerCode is integer as registered with CheckedID."
     )
-    Users: list[UserRequest] = Field(..., description="List of Users")
+    Users: List[UserRequest] = Field(..., description="List of Users")
 
 
 class UpdateUserDetailsResponse(BaseModel):
     CustomerCode: int = Field(
         ..., description="CustomerCode is integer as registered with CheckedID."
     )
-    Users: list[UpdateUserResponse] = Field(..., description="List of users")
+    Users: List[UpdateUserResponse] = Field(..., description="List of users")
 
 
 class ActivateUsers(BaseModel):
     CustomerCode: int = Field(
         ..., description="CustomerCode is integer as registered with CheckedID."
     )
-    Users: list[ActivateUserRequest] = Field(..., description="List of Users")
+    Users: List[ActivateUserRequest] = Field(..., description="List of Users")
 
 
 class ActivateUsersResponse(BaseModel):
     CustomerCode: int = Field(
         ..., description="CustomerCode is integer as registered with CheckedID."
     )
-    Users: list[ActivateUserResponse] = Field(..., description="List of Users")
+    Users: List[ActivateUserResponse] = Field(..., description="List of Users")
