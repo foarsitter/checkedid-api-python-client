@@ -25,7 +25,6 @@ class Client:
     def oauth_token(
         self, grant_type: str, username: str, password: str
     ) -> Union[models.OAuthToken, models.ErrorResponse]:
-
         response = self.httpx.post(
             "/oauth/token",
             data={"grant_type": grant_type, "username": username, "password": password},
@@ -41,9 +40,8 @@ class Client:
             return self.handle_error_response(response)
 
     def invitation_status(
-        self, invitation_code
+        self, invitation_code: str
     ) -> Union[models.Invitation, models.ErrorResponse]:
-
         response: Response = self.httpx.get(
             f"/result/status/{invitation_code}",
             headers={"Accept": "application/json"},
@@ -57,13 +55,12 @@ class Client:
     def invitations_create(
         self, invitations: List[models.CreateInvitationRequest]
     ) -> Union[CustomerDetails, models.ErrorResponse]:
-
         obj = models.CreateInvitationDetails(
             CustomerCode=self.customer_code, Invitations=invitations
         )
 
         response: Response = self.httpx.post(
-            f"/invitations",
+            "/invitations",
             json=obj.dict(),
             headers={"Accept": "application/json", "Content-Type": "application/json"},
         )
@@ -73,7 +70,9 @@ class Client:
         else:
             return self.handle_error_response(response)
 
-    def invitation_delete(self, invitation_code) -> Union[models.ErrorResponse, bool]:
+    def invitation_delete(
+        self, invitation_code: str
+    ) -> Union[models.ErrorResponse, bool]:
         response: Response = self.httpx.delete(
             f"/invitation/{self.customer_code}/{invitation_code}",
             headers={"Accept": "application/json"},
@@ -85,7 +84,6 @@ class Client:
             return self.handle_error_response(response)
 
     def handle_error_response(self, response: Response) -> models.ErrorResponse:
-
         try:
             json = response.json()
         except JSONDecodeError:

@@ -3,6 +3,7 @@ import os
 import pytest
 
 from checkedid.client import Client
+from checkedid.models import ErrorResponse
 
 
 @pytest.fixture
@@ -26,6 +27,9 @@ def auth_client(client: Client) -> Client:
     response = client.oauth_token(
         "password", os.getenv("CHECKEDID_USERNAME"), os.getenv("CHECKEDID_PASSWORD")
     )
+
+    if isinstance(response, ErrorResponse):
+        raise Exception("Auth failed")
 
     assert response.access_token
 

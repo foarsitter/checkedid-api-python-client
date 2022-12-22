@@ -6,8 +6,6 @@ from __future__ import annotations
 
 from datetime import datetime
 from typing import Any
-from typing import List
-from typing import Optional
 
 from pydantic import BaseModel
 from pydantic import Field
@@ -35,18 +33,21 @@ class CreateInvitationRequest(BaseModel):
     )
     CustomerReference: str | None = Field(
         None,
-        description="CustomerReference is string to be used by customers for identifying this Invitation in their own environment.",
+        description="CustomerReference is string to be used by customers "
+        "for identifying this Invitation in their own environment.",
     )
     AppFlow: str = Field(
         ..., description="AppFlow is string with possible values 10 to 29"
     )
     Validity: int = Field(
         ...,
-        description="Validity is integer indicating the number of hours the Invitation is valid after being generated.",
+        description="Validity is integer indicating the number"
+        " of hours the Invitation is valid after being generated.",
     )
     PreferredLanguage: str | None = Field(
         None,
-        description='PreferredLanguage is string with possible values "nl", "en", "fr", "de" (Used in sending invitation through email)',
+        description='PreferredLanguage is string with possible values "nl",'
+        ' "en", "fr", "de" (Used in sending invitation through email)',
     )
 
 
@@ -78,18 +79,21 @@ class UpdateInvitationRequest(BaseModel):
     )
     CustomerReference: str | None = Field(
         None,
-        description="CustomerReference is string to be used by customers for identifying this Invitation in their own environment.",
+        description="CustomerReference is string to be used by customers for"
+        " identifying this Invitation in their own environment.",
     )
     AppFlow: str = Field(
         ..., description="AppFlow is string with possible values 10 to 29"
     )
     Validity: int = Field(
         ...,
-        description="Validity is integer indicating the number of hours the Invitation is valid after being generated.",
+        description="Validity is integer indicating the number of hours the"
+        " Invitation is valid after being generated.",
     )
     PreferredLanguage: str | None = Field(
         None,
-        description='PreferredLanguage is string with possible values "nl", "en", "fr", "de" (Used in sending invitation through email)',
+        description='PreferredLanguage is string with possible values "nl", "en",'
+        ' "fr", "de" (Used in sending invitation through email)',
     )
 
 
