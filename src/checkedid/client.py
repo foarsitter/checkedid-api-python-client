@@ -8,7 +8,6 @@ from httpx import Request
 from httpx import Response
 
 from . import models
-from .models.generated import CustomerDetails
 
 
 class Client:
@@ -54,7 +53,7 @@ class Client:
 
     def invitations_create(
         self, invitations: List[models.CreateInvitationRequest]
-    ) -> Union[CustomerDetails, models.ErrorResponse]:
+    ) -> Union[models.CustomerDetails, models.ErrorResponse]:
         obj = models.CreateInvitationDetails(
             CustomerCode=self.customer_code, Invitations=invitations
         )
@@ -82,6 +81,24 @@ class Client:
             return True
         else:
             return self.handle_error_response(response)
+
+    def dossier(
+        self, dossier_number: str
+    ) -> Union[models.ReportResponse, models.ErrorResponse]:
+        response = self.httpx.get(f"/report/{dossier_number}")
+
+        if response.status_code == 200:
+            return models.ReportResponse(**response.json())
+        return self.handle_error_response(response)
+
+    def dossier_with_scope(
+        self, dossier_number: str, scope: str
+    ) -> Union[models.ReportDataV3, models.ErrorResponse]:
+        response = self.httpx.get(f"/reportdata/{dossier_number}/{scope}")
+
+        if response.status_code == 200:
+            return models.ReportDataV3(**response.json())
+        return self.handle_error_response(response)
 
     def handle_error_response(self, response: Response) -> models.ErrorResponse:
         try:

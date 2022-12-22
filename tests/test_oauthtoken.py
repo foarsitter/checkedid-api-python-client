@@ -9,3 +9,9 @@ def test_oauthtoken(client: Client):
     )
 
     assert response.access_token
+
+
+def test_oauthtoken_with_error(client: Client):
+    response = client.oauth_token("password", "error", "error")
+
+    assert response.status_code == 400
