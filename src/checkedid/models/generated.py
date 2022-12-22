@@ -2,10 +2,9 @@
 #   filename:  openapi.json
 #   timestamp: 2022-12-21T13:46:22+00:00
 
-from __future__ import annotations
-
 from datetime import datetime
 from typing import Any
+from typing import Optional
 
 from pydantic import BaseModel
 from pydantic import Field
@@ -27,11 +26,11 @@ class CreateInvitationRequest(BaseModel):
         ...,
         description="InviteeFirstName is string to be used for personally addressing the invitee.",
     )
-    InviteeLastName: str | None = Field(
+    InviteeLastName: Optional[str] = Field(
         None,
         description="InviteeLastName is string to be used for personally addressing the invitee.",
     )
-    CustomerReference: str | None = Field(
+    CustomerReference: Optional[str] = Field(
         None,
         description="CustomerReference is string to be used by customers "
         "for identifying this Invitation in their own environment.",
@@ -44,7 +43,7 @@ class CreateInvitationRequest(BaseModel):
         description="Validity is integer indicating the number"
         " of hours the Invitation is valid after being generated.",
     )
-    PreferredLanguage: str | None = Field(
+    PreferredLanguage: Optional[str] = Field(
         None,
         description='PreferredLanguage is string with possible values "nl",'
         ' "en", "fr", "de" (Used in sending invitation through email)',
@@ -54,30 +53,30 @@ class CreateInvitationRequest(BaseModel):
 class Invitation(BaseModel):
     EmployeeCode: int = Field(..., description="Employee Code")
     InviteeEmail: str = Field(..., description="Invitee Email")
-    InvitationCode: str | None = Field(None, description="Invitation Code")
+    InvitationCode: Optional[str] = Field(None, description="Invitation Code")
     InviteeFirstName: str = Field(..., description="First Name")
-    InviteeLastName: str | None = Field(
+    InviteeLastName: Optional[str] = Field(
         None,
         description="InviteeLastName is string to be used for personally addressing the invitee.",
     )
-    CustomerReference: str | None = Field(None, description="Customer Reference")
+    CustomerReference: Optional[str] = Field(None, description="Customer Reference")
     AppFlow: str = Field(..., description="App Flow")
     Validity: int = Field(..., description="Validity")
-    InvitedTime: str | None = Field(None, description="Invitation Date Time")
-    PreferredLanguage: str | None = Field(None, description="Preferred Language")
+    InvitedTime: Optional[str] = Field(None, description="Invitation Date Time")
+    PreferredLanguage: Optional[str] = Field(None, description="Preferred Language")
 
 
 class UpdateInvitationRequest(BaseModel):
-    InvitationCode: str | None = Field(None, description="Invitation Code")
+    InvitationCode: Optional[str] = Field(None, description="Invitation Code")
     InviteeFirstName: str = Field(
         ...,
         description="InviteeFirstName is string to be used for personally addressing the invitee.",
     )
-    InviteeLastName: str | None = Field(
+    InviteeLastName: Optional[str] = Field(
         None,
         description="InviteeLastName is string to be used for personally addressing the invitee.",
     )
-    CustomerReference: str | None = Field(
+    CustomerReference: Optional[str] = Field(
         None,
         description="CustomerReference is string to be used by customers for"
         " identifying this Invitation in their own environment.",
@@ -90,7 +89,7 @@ class UpdateInvitationRequest(BaseModel):
         description="Validity is integer indicating the number of hours the"
         " Invitation is valid after being generated.",
     )
-    PreferredLanguage: str | None = Field(
+    PreferredLanguage: Optional[str] = Field(
         None,
         description='PreferredLanguage is string with possible values "nl", "en",'
         ' "fr", "de" (Used in sending invitation through email)',
@@ -98,190 +97,200 @@ class UpdateInvitationRequest(BaseModel):
 
 
 class CreateUserRequest(BaseModel):
-    UserCode: int | None = Field(None, description="UserCode is integer")
-    FirstName: str | None = Field(
+    UserCode: Optional[int] = Field(None, description="UserCode is integer")
+    FirstName: Optional[str] = Field(
         None,
         description="FirstName is string to be used for personally addressing the user.",
     )
-    LastName: str | None = Field(
+    LastName: Optional[str] = Field(
         None,
         description="LastName is string to be used for personally addressing the user.",
     )
-    Role: str | None = Field(None, description="Role of the user (Admin/Basic/AppOnly)")
-    Email: str | None = Field(
+    Role: Optional[str] = Field(
+        None, description="Role of the user (Admin/Basic/AppOnly)"
+    )
+    Email: Optional[str] = Field(
         None, description="Email is string used as unique identifier for users."
     )
-    Password: str | None = Field(None, description="Password")
-    StartDate: datetime | None = Field(None, description="Start Date of the user")
-    EndDate: datetime | None = Field(None, description="End Date of the user")
-    HolderConfirmationBy: str | None = Field(
+    Password: Optional[str] = Field(None, description="Password")
+    StartDate: Optional[datetime] = Field(None, description="Start Date of the user")
+    EndDate: Optional[datetime] = Field(None, description="End Date of the user")
+    HolderConfirmationBy: Optional[str] = Field(
         None, description="Holder Confirmation By (App user/CheckedID Auto)"
     )
-    UserType: str | None = Field(None, description="User type (Internal/External)")
-    UserReference: str | None = Field(None, description="User reference")
-    ReportEmailAddress: str | None = Field(
+    UserType: Optional[str] = Field(None, description="User type (Internal/External)")
+    UserReference: Optional[str] = Field(None, description="User reference")
+    ReportEmailAddress: Optional[str] = Field(
         None, description="Alternative email address for reports"
     )
-    NotificationEmailAddress: str | None = Field(
+    NotificationEmailAddress: Optional[str] = Field(
         None, description="Nomination email address"
     )
 
 
 class CreateUserResponse(BaseModel):
-    UserCode: int | None = Field(None, description="User Code")
-    FirstName: str | None = Field(
+    UserCode: Optional[int] = Field(None, description="User Code")
+    FirstName: Optional[str] = Field(
         None,
         description="FirstName is string to be used for personally addressing the user.",
     )
-    LastName: str | None = Field(
+    LastName: Optional[str] = Field(
         None,
         description="LastName is string to be used for personally addressing the user.",
     )
-    Role: str | None = Field(None, description="Role of the user (Admin/Basic/AppOnly)")
-    Email: str | None = Field(
+    Role: Optional[str] = Field(
+        None, description="Role of the user (Admin/Basic/AppOnly)"
+    )
+    Email: Optional[str] = Field(
         None, description="Email is string used as unique identifier for users."
     )
-    ActivationCode: str | None = Field(
+    ActivationCode: Optional[str] = Field(
         None, description="Code generated by CheckedID for activation"
     )
-    StartDate: datetime | None = Field(None, description="Start Date of the user")
-    EndDate: datetime | None = Field(None, description="End Date of the user")
-    HolderConfirmationBy: str | None = Field(
+    StartDate: Optional[datetime] = Field(None, description="Start Date of the user")
+    EndDate: Optional[datetime] = Field(None, description="End Date of the user")
+    HolderConfirmationBy: Optional[str] = Field(
         None, description="Holder Confirmation By (App user/CheckedID Auto)"
     )
-    UserType: str | None = Field(None, description="User type (Internal/External)")
-    UserReference: str | None = Field(None, description="User reference")
-    ReportEmailAddress: str | None = Field(
+    UserType: Optional[str] = Field(None, description="User type (Internal/External)")
+    UserReference: Optional[str] = Field(None, description="User reference")
+    ReportEmailAddress: Optional[str] = Field(
         None, description="Alternative email address for reports"
     )
-    NotificationEmailAddress: str | None = Field(
+    NotificationEmailAddress: Optional[str] = Field(
         None, description="Nomination email address"
     )
 
 
 class UserRequest(BaseModel):
-    UserCode: int | None = Field(None, description="UserCode is integer")
-    FirstName: str | None = Field(
+    UserCode: Optional[int] = Field(None, description="UserCode is integer")
+    FirstName: Optional[str] = Field(
         None,
         description="FirstName is string to be used for personally addressing the user.",
     )
-    LastName: str | None = Field(
+    LastName: Optional[str] = Field(
         None,
         description="LastName is string to be used for personally addressing the user.",
     )
-    Role: str | None = Field(None, description="Role of the user (Admin/Basic/AppOnly)")
-    Email: str | None = Field(
+    Role: Optional[str] = Field(
+        None, description="Role of the user (Admin/Basic/AppOnly)"
+    )
+    Email: Optional[str] = Field(
         None, description="Email is string used as unique identifier for users."
     )
-    Password: str | None = Field(None, description="Password")
-    StartDate: datetime | None = Field(None, description="Start Date of the user")
-    EndDate: datetime | None = Field(None, description="End Date of the user")
-    HolderConfirmationBy: str | None = Field(
+    Password: Optional[str] = Field(None, description="Password")
+    StartDate: Optional[datetime] = Field(None, description="Start Date of the user")
+    EndDate: Optional[datetime] = Field(None, description="End Date of the user")
+    HolderConfirmationBy: Optional[str] = Field(
         None, description="Holder Confirmation By (App user/CheckedID Auto)"
     )
-    UserType: str | None = Field(None, description="User type (Internal/External)")
-    UserReference: str | None = Field(None, description="User reference")
-    ReportEmailAddress: str | None = Field(
+    UserType: Optional[str] = Field(None, description="User type (Internal/External)")
+    UserReference: Optional[str] = Field(None, description="User reference")
+    ReportEmailAddress: Optional[str] = Field(
         None, description="Alternative email address for reports"
     )
-    NotificationEmailAddress: str | None = Field(
+    NotificationEmailAddress: Optional[str] = Field(
         None, description="Notification email address"
     )
 
 
 class UpdateUserResponse(BaseModel):
-    UserCode: int | None = Field(None, description="User Code")
-    FirstName: str | None = Field(
+    UserCode: Optional[int] = Field(None, description="User Code")
+    FirstName: Optional[str] = Field(
         None,
         description="FirstName is string to be used for personally addressing the user.",
     )
-    LastName: str | None = Field(
+    LastName: Optional[str] = Field(
         None,
         description="LastName is string to be used for personally addressing the user.",
     )
-    Role: str | None = Field(None, description="Role of the user (Admin/Basic/AppOnly)")
-    Email: str | None = Field(
+    Role: Optional[str] = Field(
+        None, description="Role of the user (Admin/Basic/AppOnly)"
+    )
+    Email: Optional[str] = Field(
         None, description="Email is string used as unique identifier for users."
     )
-    ActivationCode: str | None = Field(
+    ActivationCode: Optional[str] = Field(
         None, description="Code generated by CheckedID for activation"
     )
-    StartDate: datetime | None = Field(None, description="Start Date of the user")
-    EndDate: datetime | None = Field(None, description="End Date of the user")
-    HolderConfirmationBy: str | None = Field(
+    StartDate: Optional[datetime] = Field(None, description="Start Date of the user")
+    EndDate: Optional[datetime] = Field(None, description="End Date of the user")
+    HolderConfirmationBy: Optional[str] = Field(
         None, description="Holder Confirmation By (App user/CheckedID Auto)"
     )
-    UserType: str | None = Field(None, description="User type (Internal/External)")
-    UserReference: str | None = Field(None, description="User reference")
-    ReportEmailAddress: str | None = Field(
+    UserType: Optional[str] = Field(None, description="User type (Internal/External)")
+    UserReference: Optional[str] = Field(None, description="User reference")
+    ReportEmailAddress: Optional[str] = Field(
         None, description="Alternative email address for reports"
     )
-    NotificationEmailAddress: str | None = Field(
+    NotificationEmailAddress: Optional[str] = Field(
         None, description="Notification email address"
     )
 
 
 class ActivateUserRequest(BaseModel):
-    UserCode: int | None = Field(None, description="UserCode is integer")
+    UserCode: Optional[int] = Field(None, description="UserCode is integer")
 
 
 class ActivateUserResponse(BaseModel):
-    UserCode: int | None = Field(None, description="UserCode is integer")
-    ActivationCode: str | None = Field(None, description="Generated activation code")
+    UserCode: Optional[int] = Field(None, description="UserCode is integer")
+    ActivationCode: Optional[str] = Field(None, description="Generated activation code")
 
 
 class ReportResponse(BaseModel):
-    DossierNumber: str | None = Field(None, description="Dossier Number")
-    ReportPDF: str | None = Field(None, description="Report PDF")
+    DossierNumber: Optional[str] = Field(None, description="Dossier Number")
+    ReportPDF: Optional[str] = Field(None, description="Report PDF")
 
 
 class ReportDataV3(BaseModel):
-    CustomerCode: str | None = Field(None, description="Customer Code")
-    CustomerName: str | None = Field(None, description="Customer name")
-    DossierNumber: str | None = Field(None, description="Dossier number of the report")
-    EmployeeCode: str | None = Field(None, description="Employee Code")
-    EmployeeInvolved: str | None = Field(None, description="Employee Involved")
-    ReportDateTime: str | None = Field(None, description="Report Date Time")
-    ExecutedBy: str | None = Field(None, description="Executed By")
-    ReportResult: str | None = Field(None, description="Result")
-    Details: str | None = Field(None, description="Details")
-    DetailsMessageCode: str | None = Field(None, description="Details Message Code")
-    DocumentType: str | None = Field(None, description="Document Type")
-    DocumentTypeCode: str | None = Field(None, description="Document Code")
-    DocumentCountry: str | None = Field(None, description="Document Country")
-    DocumentNumber: str | None = Field(None, description="Document Number")
-    DateOfIssue: str | None = Field(None, description="Date of Issue")
-    DateOfExpiry: str | None = Field(None, description="Date of Expiry")
-    Authority: str | None = Field(None, description="Authority")
-    FirstName: str | None = Field(None, description="First Name")
-    Name: str | None = Field(None, description="Name")
-    Sex: str | None = Field(None, description="Sex")
-    DateOfBirth: str | None = Field(None, description="Date of Birth")
-    PlaceOfBirth: str | None = Field(None, description="Place of Birth")
-    PersonalNumber: str | None = Field(None, description="Personal Number")
-    Nationality: str | None = Field(None, description="Nationality")
-    PhotoIdChip: list[str] | None = Field(None, description="Photo Id Chip")
-    PhotoHolder: list[str] | None = Field(None, description="Photo Holder")
-    IdDocumentFront: list[str] | None = Field(None, description="Front Document")
-    IdDocumentBack: list[str] | None = Field(None, description="Back Document")
-    OtherDocument: list[str] | None = Field(None, description="Other document")
-    SignatureFromIDDocument: str | None = Field(
+    CustomerCode: Optional[str] = Field(None, description="Customer Code")
+    CustomerName: Optional[str] = Field(None, description="Customer name")
+    DossierNumber: Optional[str] = Field(
+        None, description="Dossier number of the report"
+    )
+    EmployeeCode: Optional[str] = Field(None, description="Employee Code")
+    EmployeeInvolved: Optional[str] = Field(None, description="Employee Involved")
+    ReportDateTime: Optional[str] = Field(None, description="Report Date Time")
+    ExecutedBy: Optional[str] = Field(None, description="Executed By")
+    ReportResult: Optional[str] = Field(None, description="Result")
+    Details: Optional[str] = Field(None, description="Details")
+    DetailsMessageCode: Optional[str] = Field(None, description="Details Message Code")
+    DocumentType: Optional[str] = Field(None, description="Document Type")
+    DocumentTypeCode: Optional[str] = Field(None, description="Document Code")
+    DocumentCountry: Optional[str] = Field(None, description="Document Country")
+    DocumentNumber: Optional[str] = Field(None, description="Document Number")
+    DateOfIssue: Optional[str] = Field(None, description="Date of Issue")
+    DateOfExpiry: Optional[str] = Field(None, description="Date of Expiry")
+    Authority: Optional[str] = Field(None, description="Authority")
+    FirstName: Optional[str] = Field(None, description="First Name")
+    Name: Optional[str] = Field(None, description="Name")
+    Sex: Optional[str] = Field(None, description="Sex")
+    DateOfBirth: Optional[str] = Field(None, description="Date of Birth")
+    PlaceOfBirth: Optional[str] = Field(None, description="Place of Birth")
+    PersonalNumber: Optional[str] = Field(None, description="Personal Number")
+    Nationality: Optional[str] = Field(None, description="Nationality")
+    PhotoIdChip: Optional[list[str]] = Field(None, description="Photo Id Chip")
+    PhotoHolder: Optional[list[str]] = Field(None, description="Photo Holder")
+    IdDocumentFront: Optional[list[str]] = Field(None, description="Front Document")
+    IdDocumentBack: Optional[list[str]] = Field(None, description="Back Document")
+    OtherDocument: Optional[list[str]] = Field(None, description="Other document")
+    SignatureFromIDDocument: Optional[str] = Field(
         None, description="Signature from ID Document"
     )
 
 
 class ResultCallbackStatus(BaseModel):
-    CustomerCode: int | None = Field(None, description="Customer Code")
-    EmployeeCode: int | None = Field(None, description="Employee Code")
-    InviteeEmail: str | None = Field(None, description="Invitee Email")
-    CustomerReference: str | None = Field(None, description="Customer Reference")
-    InvitationCode: str | None = Field(None, description="Invitation Code")
-    DossierNumber: str | None = Field(None, description="Dossier Number")
-    ReportDateTime: str | None = Field(None, description="Report Date Time")
-    ReportResult: str | None = Field(None, description="Result")
-    Details: str | None = Field(None, description="Details")
-    DetailsMessageCode: str | None = Field(None, description="Message Codes")
-    Status: str | None = Field(None, description="Status")
+    CustomerCode: Optional[int] = Field(None, description="Customer Code")
+    EmployeeCode: Optional[int] = Field(None, description="Employee Code")
+    InviteeEmail: Optional[str] = Field(None, description="Invitee Email")
+    CustomerReference: Optional[str] = Field(None, description="Customer Reference")
+    InvitationCode: Optional[str] = Field(None, description="Invitation Code")
+    DossierNumber: Optional[str] = Field(None, description="Dossier Number")
+    ReportDateTime: Optional[str] = Field(None, description="Report Date Time")
+    ReportResult: Optional[str] = Field(None, description="Result")
+    Details: Optional[str] = Field(None, description="Details")
+    DetailsMessageCode: Optional[str] = Field(None, description="Message Codes")
+    Status: Optional[str] = Field(None, description="Status")
 
 
 class CreateInvitationDetails(BaseModel):
