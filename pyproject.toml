@@ -50,9 +50,6 @@ xdoctest = {extras = ["colors"], version = ">=0.15.10"}
 myst-parser = {version = ">=0.16.1"}
 respx = "^0.20.1"
 
-[tool.poetry.scripts]
-checkedid-python-client = "checkedid.__main__:main"
-
 [tool.coverage.paths]
 source = ["src", "*/site-packages"]
 tests = ["tests", "*/tests"]
