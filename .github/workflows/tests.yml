@@ -18,13 +18,11 @@ jobs:
           - { python: "3.9", os: "ubuntu-latest", session: "mypy" }
           - { python: "3.8", os: "ubuntu-latest", session: "mypy" }
           - { python: "3.7", os: "ubuntu-latest", session: "mypy" }
+          - { python: "3.11", os: "ubuntu-latest", session: "tests" }
           - { python: "3.10", os: "ubuntu-latest", session: "tests" }
           - { python: "3.9", os: "ubuntu-latest", session: "tests" }
           - { python: "3.8", os: "ubuntu-latest", session: "tests" }
           - { python: "3.7", os: "ubuntu-latest", session: "tests" }
-          - { python: "3.10", os: "windows-latest", session: "tests" }
-          - { python: "3.10", os: "macos-latest", session: "tests" }
-          - { python: "3.10", os: "ubuntu-latest", session: "typeguard" }
           - { python: "3.10", os: "ubuntu-latest", session: "xdoctest" }
           - { python: "3.10", os: "ubuntu-latest", session: "docs-build" }
 
@@ -32,6 +30,10 @@ jobs:
       NOXSESSION: ${{ matrix.session }}
       FORCE_COLOR: "1"
       PRE_COMMIT_COLOR: "always"
+      CHECKEDID_EMPLOYEE_CODE: ${{ secrets.CHECKEDID_EMPLOYEE_CODE }}
+      CHECKEDID_CUSTOMER_CODE: ${{ secrets.CHECKEDID_CUSTOMER_CODE }}
+      CHECKEDID_PASSWORD: ${{ secrets.CHECKEDID_PASSWORD }}
+      CHECKEDID_USERNAME: ${{ secrets.CHECKEDID_USERNAME }}
 
     steps:
       - name: Check out the repository

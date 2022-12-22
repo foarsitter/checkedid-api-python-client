@@ -23,14 +23,14 @@ except ImportError:
 
 
 package = "checkedid"
-python_versions = ["3.10", "3.9", "3.8", "3.7"]
+python_versions = ["3.10", "3.9", "3.8", "3.7", "3.11"]
 nox.needs_version = ">= 2021.6.6"
 nox.options.sessions = (
     "pre-commit",
     "safety",
     "mypy",
     "tests",
-    "typeguard",
+    # "typeguard",
     "xdoctest",
     "docs-build",
 )
@@ -161,7 +161,7 @@ def mypy(session: Session) -> None:
 def tests(session: Session) -> None:
     """Run the test suite."""
     session.install(".")
-    session.install("coverage[toml]", "pytest", "pygments")
+    session.install("coverage[toml]", "pytest", "pygments", "respx")
     try:
         session.run("coverage", "run", "--parallel", "-m", "pytest", *session.posargs)
     finally:
