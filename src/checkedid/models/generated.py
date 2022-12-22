@@ -4,6 +4,7 @@
 
 from datetime import datetime
 from typing import Any
+from typing import List
 from typing import Optional
 
 from pydantic import BaseModel
@@ -269,11 +270,11 @@ class ReportDataV3(BaseModel):
     PlaceOfBirth: Optional[str] = Field(None, description="Place of Birth")
     PersonalNumber: Optional[str] = Field(None, description="Personal Number")
     Nationality: Optional[str] = Field(None, description="Nationality")
-    PhotoIdChip: Optional[list[str]] = Field(None, description="Photo Id Chip")
-    PhotoHolder: Optional[list[str]] = Field(None, description="Photo Holder")
-    IdDocumentFront: Optional[list[str]] = Field(None, description="Front Document")
-    IdDocumentBack: Optional[list[str]] = Field(None, description="Back Document")
-    OtherDocument: Optional[list[str]] = Field(None, description="Other document")
+    PhotoIdChip: Optional[List[str]] = Field(None, description="Photo Id Chip")
+    PhotoHolder: Optional[List[str]] = Field(None, description="Photo Holder")
+    IdDocumentFront: Optional[List[str]] = Field(None, description="Front Document")
+    IdDocumentBack: Optional[List[str]] = Field(None, description="Back Document")
+    OtherDocument: Optional[List[str]] = Field(None, description="Other document")
     SignatureFromIDDocument: Optional[str] = Field(
         None, description="Signature from ID Document"
     )
