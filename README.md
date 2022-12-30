@@ -23,11 +23,11 @@
 
 ## Features
 
-- TODO
+- Typed API client for api.checkedid.eu
 
 ## Requirements
 
-- TODO
+- Build with Pydantic and httpx, does currently not support async.
 
 ## Installation
 
@@ -39,7 +39,15 @@ $ pip install checkedid
 
 ## Usage
 
-Please see the [Command-line Reference] for details.
+```py
+from checkedid import errors, models, Client
+
+try:
+    client = Client('1001')
+    dossier: models.ReportResponse = client.dossier('123456789')
+except errors.CheckedIDNotFoundError as e:
+    print("Dossier does not exists")
+```
 
 ## Contributing
 
@@ -70,4 +78,3 @@ This project was generated from [@cjolowicz]'s [Hypermodern Python Cookiecutter]
 
 [license]: https://github.com/foarsitter/checkedid-api-python-client/blob/main/LICENSE
 [contributor guide]: https://github.com/foarsitter/checkedid-api-python-client/blob/main/CONTRIBUTING.md
-[command-line reference]: https://checkedid-api-python-client.readthedocs.io/en/latest/usage.html
