@@ -5,9 +5,9 @@ description = "CheckedID Python API client"
 authors = ["Jelmer Draaijer <jelmer.draaijer@dok.works.nl>"]
 license = "MIT"
 readme = "README.md"
-homepage = "https://github.com/foarsitter/checkedid-python-client"
-repository = "https://github.com/foarsitter/checkedid-python-client"
-documentation = "https://checkedid-python-client.readthedocs.io"
+homepage = "https://github.com/foarsitter/checkedid-api-python-client"
+repository = "https://github.com/foarsitter/checkedid-api-python-client"
+documentation = "https://checkedid.readthedocs.io"
 packages = [
     { include = "checkedid", from = "src" },
 ]
@@ -16,7 +16,7 @@ classifiers = [
 ]
 
 [tool.poetry.urls]
-Changelog = "https://github.com/foarsitter/checkedid-python-client/releases"
+Changelog = "https://github.com/foarsitter/checkedid-api-python-client/releases"
 
 [tool.poetry.dependencies]
 python = "^3.7"

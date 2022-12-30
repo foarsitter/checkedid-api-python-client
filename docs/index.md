@@ -19,5 +19,5 @@ reference
 contributing
 Code of Conduct <codeofconduct>
 License <license>
-Changelog <https://github.com/foarsitter/checkedid-python-client/releases>
+Changelog <https://github.com/foarsitter/checkedid-api-python-client/releases>
 ```
