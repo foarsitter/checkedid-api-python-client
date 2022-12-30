@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "checkedid"
-version = "0.2.0"
+version = "0.3.0"
 description = "CheckedID Python API client"
 authors = ["Jelmer Draaijer <jelmer.draaijer@dok.works.nl>"]
 license = "MIT"
