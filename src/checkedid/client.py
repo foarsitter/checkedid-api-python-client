@@ -2,6 +2,7 @@ from json import JSONDecodeError
 from typing import Dict
 from typing import List
 from typing import Optional
+from typing import Self
 from typing import Type
 from typing import TypeVar
 
@@ -141,7 +142,7 @@ class Client:
 class ClientAsync(Client):
     """for asyncio"""
 
-    def create_client(self, base_url):
+    def create_client(self, base_url) -> None:
         self.client = httpx.AsyncClient(base_url=base_url)
 
     async def dossier(self, dossier_number: str) -> endpoints.DossierEndpoint.response:
@@ -151,17 +152,17 @@ class ClientAsync(Client):
 
         return self.process_response(response, endpoints.DossierEndpoint.response)
 
-    def close(self):
+    def close(self) -> None:
         self.client.aclose()
 
-    def open(self):
+    def open(self) -> None:
         self.create_client(self.base_url)
 
-    def __enter__(self):
+    def __enter__(self) -> Self:
         """Open the httpx client"""
         self.open()
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self, exc_type, exc_val, exc_tb) -> None:
         """Close the httpx client"""
         self.close()
