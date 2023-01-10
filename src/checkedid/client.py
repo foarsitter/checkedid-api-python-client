@@ -9,27 +9,30 @@ import httpx
 from httpx import Request
 from httpx import Response
 
+from . import endpoints
+from . import errors
 from . import models
-from .errors import CheckedIDAuthenticationError
-from .errors import CheckedIDError
-from .errors import CheckedIDNotFoundError
-from .errors import CheckedIDValidationError
 
 
 _T = TypeVar("_T")
 
 
 class Client:
-    ERROR_RESPONSE_MAPPING: Dict[int, Type[CheckedIDError]] = {
-        422: CheckedIDValidationError,
-        403: CheckedIDAuthenticationError,
-        404: CheckedIDNotFoundError,
+    ERROR_RESPONSE_MAPPING: Dict[int, Type[errors.CheckedIDError]] = {
+        422: errors.CheckedIDValidationError,
+        403: errors.CheckedIDAuthenticationError,
+        404: errors.CheckedIDNotFoundError,
     }
 
     def __init__(self, customer_code: str, base_url: str = "https://api.checkedid.eu/"):
-        self.httpx = httpx.Client(base_url=base_url, auth=self.authenticate_request)
+        self.client: Optional[httpx.Client] = None
+        self.base_url = base_url
+        self.create_client(base_url)
         self.access_token: Optional[str] = None
         self.customer_code = customer_code
+
+    def create_client(self, base_url):
+        self.httpx = httpx.Client(base_url=base_url, auth=self.authenticate_request)
 
     def authenticate_request(self, request: Request) -> Request:
         if self.access_token:
@@ -112,7 +115,7 @@ class Client:
 
     def handle_error_response(self, response: Response) -> None:
         if response.status_code == 400:
-            raise CheckedIDValidationError(
+            raise errors.CheckedIDValidationError(
                 response.text, status_code=response.status_code
             )
 
@@ -128,8 +131,37 @@ class Client:
             status_code=response.status_code, json=json, message="Error from server"
         )
 
-    def map_exception(self, response: Response) -> Type[CheckedIDError]:
+    def map_exception(self, response: Response) -> Type[errors.CheckedIDError]:
         exception_type = self.ERROR_RESPONSE_MAPPING.get(
-            response.status_code, CheckedIDError
+            response.status_code, errors.CheckedIDError
         )
         return exception_type
+
+
+class ClientAsync(Client):
+    """for asyncio"""
+
+    def create_client(self, base_url):
+        self.client = httpx.AsyncClient(base_url=base_url)
+
+    async def dossier(self, dossier_number: str) -> endpoints.DossierEndpoint.response:
+        response = await self.client.get(
+            url=endpoints.DossierEndpoint.url(dossier_number=dossier_number)
+        )
+
+        return self.process_response(response, endpoints.DossierEndpoint.response)
+
+    def close(self):
+        self.client.aclose()
+
+    def open(self):
+        self.create_client(self.base_url)
+
+    def __enter__(self):
+        """Open the httpx client"""
+        self.open()
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        """Close the httpx client"""
+        self.close()
