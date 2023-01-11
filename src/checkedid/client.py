@@ -1,14 +1,15 @@
 from json import JSONDecodeError
+from types import TracebackType
 from typing import Dict
 from typing import List
 from typing import Optional
-from typing import Self
 from typing import Type
 from typing import TypeVar
 
 import httpx
 from httpx import Request
 from httpx import Response
+from httpx._types import URLTypes
 
 from . import endpoints
 from . import errors
@@ -32,7 +33,7 @@ class Client:
         self.access_token: Optional[str] = None
         self.customer_code = customer_code
 
-    def create_client(self, base_url):
+    def create_client(self, base_url: URLTypes) -> None:
         self.httpx = httpx.Client(base_url=base_url, auth=self.authenticate_request)
 
     def authenticate_request(self, request: Request) -> Request:
@@ -142,27 +143,35 @@ class Client:
 class ClientAsync(Client):
     """for asyncio"""
 
-    def create_client(self, base_url) -> None:
-        self.client = httpx.AsyncClient(base_url=base_url)
+    aclient: httpx.AsyncClient
 
-    async def dossier(self, dossier_number: str) -> endpoints.DossierEndpoint.response:
-        response = await self.client.get(
+    def create_client(self, base_url: URLTypes) -> None:
+        self.aclient = httpx.AsyncClient(base_url=base_url)
+
+    async def adossier(self, dossier_number: str) -> Optional[models.ReportResponse]:
+        response = await self.aclient.get(
             url=endpoints.DossierEndpoint.url(dossier_number=dossier_number)
         )
 
         return self.process_response(response, endpoints.DossierEndpoint.response)
 
-    def close(self) -> None:
-        self.client.aclose()
+    async def close(self) -> None:
+        if self.aclient:
+            await self.aclient.aclose()
 
     def open(self) -> None:
         self.create_client(self.base_url)
 
-    def __enter__(self) -> Self:
+    async def __aenter__(self) -> "ClientAsync":
         """Open the httpx client"""
         self.open()
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb) -> None:
+    async def __aexit__(
+        self,
+        exc_type: Optional[Type[BaseException]] = None,
+        exc_value: Optional[BaseException] = None,
+        traceback: Optional[TracebackType] = None,
+    ) -> None:
         """Close the httpx client"""
-        self.close()
+        await self.close()
