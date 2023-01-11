@@ -19,7 +19,7 @@ from . import models
 _T = TypeVar("_T")
 
 
-class Client:
+class BaseClient:
     ERROR_RESPONSE_MAPPING: Dict[int, Type[errors.CheckedIDError]] = {
         422: errors.CheckedIDValidationError,
         403: errors.CheckedIDAuthenticationError,
@@ -27,14 +27,13 @@ class Client:
     }
 
     def __init__(self, customer_code: str, base_url: str = "https://api.checkedid.eu/"):
-        self.client: Optional[httpx.Client] = None
         self.base_url = base_url
-        self.create_client(base_url)
         self.access_token: Optional[str] = None
         self.customer_code = customer_code
+        self.create_client(base_url)
 
     def create_client(self, base_url: URLTypes) -> None:
-        self.httpx = httpx.Client(base_url=base_url, auth=self.authenticate_request)
+        raise NotImplementedError
 
     def authenticate_request(self, request: Request) -> Request:
         if self.access_token:
@@ -50,70 +49,6 @@ class Client:
         self.handle_error_response(response)
 
         return None
-
-    def oauth_token(
-        self, grant_type: str, username: str, password: str
-    ) -> Optional[models.OAuthToken]:
-        response = self.httpx.post(
-            "/oauth/token",
-            data={"grant_type": grant_type, "username": username, "password": password},
-        )
-
-        typed_response = self.process_response(response, models.OAuthToken)
-
-        if typed_response:
-            self.access_token = typed_response.access_token
-
-            return typed_response
-        return None
-
-    def invitation_status(self, invitation_code: str) -> Optional[models.Invitation]:
-        response: Response = self.httpx.get(
-            f"/result/status/{invitation_code}",
-            headers={"Accept": "application/json"},
-        )
-
-        return self.process_response(response, models.Invitation)
-
-    def invitations_create(
-        self, invitations: List[models.CreateInvitationRequest]
-    ) -> Optional[models.CustomerDetails]:
-        obj = models.CreateInvitationDetails(
-            CustomerCode=self.customer_code, Invitations=invitations
-        )
-
-        response: Response = self.httpx.post(
-            "/invitations",
-            json=obj.dict(),
-            headers={"Accept": "application/json", "Content-Type": "application/json"},
-        )
-
-        return self.process_response(response, models.CustomerDetails)
-
-    def invitation_delete(self, invitation_code: str) -> bool:
-        response: Response = self.httpx.delete(
-            f"/invitation/{self.customer_code}/{invitation_code}",
-            headers={"Accept": "application/json"},
-        )
-
-        if response.status_code == 200:
-            return True
-
-        self.handle_error_response(response)
-
-        return False
-
-    def dossier(self, dossier_number: str) -> Optional[models.ReportResponse]:
-        response = self.httpx.get(f"/report/{dossier_number}")
-
-        return self.process_response(response, models.ReportResponse)
-
-    def dossier_with_scope(
-        self, dossier_number: str, scope: str
-    ) -> Optional[models.ReportDataV3]:
-        response = self.httpx.get(f"/reportdata/{dossier_number}/{scope}")
-
-        return self.process_response(response, models.ReportDataV3)
 
     def handle_error_response(self, response: Response) -> None:
         if response.status_code == 400:
@@ -140,24 +75,117 @@ class Client:
         return exception_type
 
 
-class ClientAsync(Client):
-    """for asyncio"""
+class Client(BaseClient):
+    client: httpx.Client
 
-    aclient: httpx.AsyncClient
+    def oauth_token(
+        self, grant_type: str, username: str, password: str
+    ) -> Optional[models.OAuthToken]:
+        response = self.client.post(
+            "/oauth/token",
+            data={"grant_type": grant_type, "username": username, "password": password},
+        )
+
+        typed_response = self.process_response(response, models.OAuthToken)
+
+        if typed_response:
+            self.access_token = typed_response.access_token
+
+            return typed_response
+        return None
+
+    def __init__(self, customer_code: str, base_url: str = "https://api.checkedid.eu/"):
+        super().__init__(customer_code, base_url)
 
     def create_client(self, base_url: URLTypes) -> None:
-        self.aclient = httpx.AsyncClient(base_url=base_url)
+        self.client = httpx.Client(base_url=base_url, auth=self.authenticate_request)
 
-    async def adossier(self, dossier_number: str) -> Optional[models.ReportResponse]:
-        response = await self.aclient.get(
+    def invitation_status(self, invitation_code: str) -> Optional[models.Invitation]:
+        response: Response = self.client.get(
+            f"/result/status/{invitation_code}",
+            headers={"Accept": "application/json"},
+        )
+
+        return self.process_response(response, models.Invitation)
+
+    def invitations_create(
+        self, invitations: List[models.CreateInvitationRequest]
+    ) -> Optional[models.CustomerDetails]:
+        obj = models.CreateInvitationDetails(
+            CustomerCode=self.customer_code, Invitations=invitations
+        )
+
+        response: Response = self.client.post(
+            "/invitations",
+            json=obj.dict(),
+            headers={"Accept": "application/json", "Content-Type": "application/json"},
+        )
+
+        return self.process_response(response, models.CustomerDetails)
+
+    def invitation_delete(self, invitation_code: str) -> bool:
+        response: Response = self.client.delete(
+            f"/invitation/{self.customer_code}/{invitation_code}",
+            headers={"Accept": "application/json"},
+        )
+
+        if response.status_code == 200:
+            return True
+
+        self.handle_error_response(response)
+
+        return False
+
+    def dossier(self, dossier_number: str) -> Optional[models.ReportResponse]:
+        response = self.client.get(f"/report/{dossier_number}")
+
+        return self.process_response(response, models.ReportResponse)
+
+    def dossier_with_scope(
+        self, dossier_number: str, scope: str
+    ) -> Optional[models.ReportDataV3]:
+        response = self.client.get(f"/reportdata/{dossier_number}/{scope}")
+
+        return self.process_response(response, models.ReportDataV3)
+
+
+class ClientAsync(BaseClient):
+    """for asyncio"""
+
+    client: httpx.AsyncClient
+
+    def __init__(self, customer_code: str, base_url: str = "https://api.checkedid.eu/"):
+        super().__init__(customer_code, base_url)
+
+    async def oauth_token(
+        self, grant_type: str, username: str, password: str
+    ) -> Optional[models.OAuthToken]:
+        response = await self.client.post(
+            "/oauth/token",
+            data={"grant_type": grant_type, "username": username, "password": password},
+        )
+
+        typed_response = self.process_response(response, models.OAuthToken)
+
+        if typed_response:
+            self.access_token = typed_response.access_token
+
+            return typed_response
+        return None
+
+    def create_client(self, base_url: URLTypes) -> None:
+        self.client = httpx.AsyncClient(base_url=base_url)
+
+    async def dossier(self, dossier_number: str) -> Optional[models.ReportResponse]:
+        response = await self.client.get(
             url=endpoints.DossierEndpoint.url(dossier_number=dossier_number)
         )
 
         return self.process_response(response, endpoints.DossierEndpoint.response)
 
     async def close(self) -> None:
-        if self.aclient:
-            await self.aclient.aclose()
+        if self.client:
+            await self.client.aclose()
 
     def open(self) -> None:
         self.create_client(self.base_url)
