@@ -50,3 +50,17 @@ def auth_client(client: Client, access_token_mock) -> Client:
     assert response.access_token
 
     return client
+
+
+@pytest.fixture
+def dossier_number():
+    return "999999-8888800"
+
+
+@pytest.fixture()
+def dossier_response_200(respx_mock, dossier_number):
+    respx_mock.get("").mock(
+        return_value=Response(
+            status_code=200, json={"DossierNumber": dossier_number, "ReportPDF": ""}
+        )
+    )

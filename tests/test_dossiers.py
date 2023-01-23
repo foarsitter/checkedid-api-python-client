@@ -4,13 +4,7 @@ from httpx import Response
 from checkedid import errors
 
 
-def test_dossier(auth_client, respx_mock):
-    dossier_number = "999999-8888800"
-    respx_mock.get("").mock(
-        return_value=Response(
-            status_code=200, json={"DossierNumber": dossier_number, "ReportPDF": ""}
-        )
-    )
+def test_dossier(auth_client, respx_mock, dossier_response_200, dossier_number):
     response = auth_client.dossier(dossier_number)
 
     assert response.DossierNumber == dossier_number
