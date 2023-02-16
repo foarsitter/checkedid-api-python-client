@@ -8,13 +8,13 @@ from checkedid.models import ErrorResponse
 
 
 @pytest.fixture
-def customer_code() -> str:
-    return os.getenv("CHECKEDID_CUSTOMER_CODE")
+def customer_code() -> int:
+    return int(os.getenv("CHECKEDID_CUSTOMER_CODE", 100029))
 
 
 @pytest.fixture
-def employee_code() -> str:
-    return os.getenv("CHECKEDID_EMPLOYEE_CODE")
+def employee_code() -> int:
+    return int(os.getenv("CHECKEDID_EMPLOYEE_CODE", 1))
 
 
 @pytest.fixture
