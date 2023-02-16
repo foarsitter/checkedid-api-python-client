@@ -26,7 +26,7 @@ class BaseClient:
         404: errors.CheckedIDNotFoundError,
     }
 
-    def __init__(self, customer_code: str, base_url: str = "https://api.checkedid.eu/"):
+    def __init__(self, customer_code: int, base_url: str = "https://api.checkedid.eu/"):
         self.base_url = base_url
         self.access_token: Optional[str] = None
         self.customer_code = customer_code
@@ -94,13 +94,13 @@ class Client(BaseClient):
             return typed_response
         return None
 
-    def __init__(self, customer_code: str, base_url: str = "https://api.checkedid.eu/"):
+    def __init__(self, customer_code: int, base_url: str = "https://api.checkedid.eu/"):
         super().__init__(customer_code, base_url)
 
     def create_client(self, base_url: URLTypes) -> None:
         self.client = httpx.Client(base_url=base_url, auth=self.authenticate_request)
 
-    def invitation_status(self, invitation_code: str) -> Optional[models.Invitation]:
+    def invitation_status(self, invitation_code: int) -> Optional[models.Invitation]:
         response: Response = self.client.get(
             f"/result/status/{invitation_code}",
             headers={"Accept": "application/json"},
@@ -154,7 +154,7 @@ class ClientAsync(BaseClient):
 
     client: httpx.AsyncClient
 
-    def __init__(self, customer_code: str, base_url: str = "https://api.checkedid.eu/"):
+    def __init__(self, customer_code: int, base_url: str = "https://api.checkedid.eu/"):
         super().__init__(customer_code, base_url)
 
     async def oauth_token(
