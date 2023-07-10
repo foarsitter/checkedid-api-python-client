@@ -121,7 +121,6 @@ def precommit(session: Session) -> None:
     ]
     session.install(
         "black",
-        "darglint",
         "flake8",
         "flake8-bandit",
         "flake8-bugbear",

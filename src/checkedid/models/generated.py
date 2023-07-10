@@ -3,16 +3,11 @@
 #   timestamp: 2022-12-21T13:46:22+00:00
 
 from datetime import datetime
-from typing import Any
 from typing import List
 from typing import Optional
 
 from pydantic import BaseModel
 from pydantic import Field
-
-
-class Model(BaseModel):
-    __root__: Any
 
 
 class CreateInvitationRequest(BaseModel):
