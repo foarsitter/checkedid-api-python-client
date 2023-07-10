@@ -19,8 +19,8 @@ classifiers = [
 Changelog = "https://github.com/foarsitter/checkedid-api-python-client/releases"
 
 [tool.poetry.dependencies]
-python = "^3.7"
-pydantic = "^1.10.2"
+python = ">3.8"
+pydantic = "^2.0.1"
 httpx = "^0.23.1"
 
 [tool.poetry.dev-dependencies]
