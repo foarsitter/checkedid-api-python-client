@@ -1,4 +1,5 @@
 """Sphinx configuration."""
+
 project = "CheckedID Python API client"
 author = "Jelmer Draaijer"
 copyright = "2022, Jelmer Draaijer"
